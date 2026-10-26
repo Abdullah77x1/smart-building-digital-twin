@@ -25,12 +25,29 @@ smart-building-digital-twin/
 │   ├── predict.py                    # Predict without retraining
 │   ├── smoke_test.py                 # Small ML integration check
 │   └── results/                      # Included small V1 checkpoint + experiment reports
+├── optimization/
+│   └── README.md                     # Future HVAC strategy and comfort optimization work
+├── dashboard/
+│   └── README.md                     # Future interface, plots and LLM integration work
 ├── data/
-│   ├── sample_building_data.csv      # 8 real example rows
+│   ├── sample_building_data.csv      # 8 example simulated rows
 │   └── building_simulation_data.csv  # GENERATE locally; intentionally not on GitHub
 ├── docs/                             # Simulator equations, pilots, ML explanation
 └── reports/                          # Your local validation reports
 ```
+
+## Get the project into VS Code (Windows)
+
+GitHub stores the shared online repository; **VS Code runs the files on your computer**. You do **not** need to download and re-upload the ZIP every time you make a change. Clone the repository once, then pull and push changes using VS Code.
+
+1. Install [VS Code](https://code.visualstudio.com/) and [Git for Windows](https://git-scm.com/downloads/win) if you do not already have them. Install the Microsoft **Python** extension in VS Code.
+2. In VS Code, press **Ctrl+Shift+P**, run **Git: Clone**, and enter:
+   `https://github.com/Abdullah77x1/smart-building-digital-twin.git`
+3. Choose a folder on your computer, sign in to GitHub when prompted (required for this private repository), and open the cloned `smart-building-digital-twin` folder.
+4. Open **Terminal → New Terminal**. All commands in this README are run from this **repository root** (the folder containing `README.md`, `simulator/` and `ml/`). You can check the location with `pwd`.
+5. For everyday development, use a **feature branch** rather than editing `main` directly. In the lower-left corner of VS Code click the branch name (usually `main`), then **Create new branch**, e.g. `feature/occupancy-experiments`. Commit and push that branch as described below.
+
+> Editing a file in VS Code changes your **local copy**. Nothing is uploaded to GitHub until you commit and push. Merely **running** the simulator never changes the shared online files.
 
 ## Quick start (run commands from repository root)
 
@@ -50,13 +67,26 @@ If PowerShell blocks activation, you can skip activation and call `.\.venv\Scrip
 python simulator/building_simulator.py
 ```
 
-This writes `data/building_simulation_data.csv` (approximately **79 MB**, **420,768 records**, sampled every five minutes) and a summary JSON. The `.gitignore` deliberately excludes the full CSV because it is reproducibly generated and bulky. **All teammates run the same command** to recreate it using the checked-in config and default seed 42.
+**Example — generate the official historical dataset:** this command uses `simulator/building_config.json`, the default seed **42**, and the period **2022-01-01 through 2025-12-31**, at **5-minute** intervals. It writes:
 
-To create a small experiment instead:
+- `data/building_simulation_data.csv` — about **79 MB**, **420,768 records** (including leap day).
+- A companion summary JSON containing aggregate simulation results.
+
+Open the CSV locally in a data viewer, or inspect a few rows without loading the entire file:
+
+```powershell
+python -c "import csv; f=open('data/building_simulation_data.csv', newline=''); r=csv.reader(f); print(next(r)); print(next(r)); f.close()"
+```
+
+The `.gitignore` excludes the large generated CSV and other local outputs. **All teammates can reproduce it locally** using the same checked-in configuration, code, and default seed. Do not commit the full generated dataset.
+
+**Example — generate only one day** instead of the four-year history:
 
 ```powershell
 python simulator/building_simulator.py --start 2023-07-10 --end 2023-07-11 --output data/one_day.csv
 ```
+
+Here `--start` is inclusive and `--end` is exclusive, so the file contains **288 five-minute records** (July 10 only). The output is saved as `data/one_day.csv` on **your computer**, not on GitHub. To test a changed simulator without overwriting the official dataset, always choose a different `--output` filename.
 
 **3. Validate the simulator**
 
@@ -88,12 +118,33 @@ python ml/train_multitask.py
 
 The script trains on **2022–23**, chooses the best model on **2024**, and saves a new checkpoint in `ml/results/`. Retraining can change the tracked model/report files; inspect diffs before committing results. Do **not** tune based on 2025 results. A one-time final evaluation uses `python ml/evaluate_model.py`.
 
+## Everyday collaboration: VS Code + GitHub
+
+Use this workflow when you or a teammate want to modify the simulator, ML model, optimization, or dashboard code:
+
+1. **Pull before starting:** In VS Code, switch to `main`, then use **Source Control → … → Pull** to get teammates' latest merged changes. Create your feature branch from this updated `main`.
+2. **Create a feature branch:** Click the branch name in the lower-left corner of VS Code → **Create new branch**, e.g. `feature/simulator-improvements`, `feature/optimization`, or `feature/dashboard`.
+3. **Edit and test locally:** Change the relevant files, save, and run the program in the integrated terminal. For a simulator experiment, use a different CSV filename, such as:
+   ```powershell
+   python simulator/building_simulator.py --start 2023-07-10 --end 2023-07-11 --output data/my_experiment.csv
+   ```
+4. **Commit:** Open VS Code's **Source Control** view, review the changed files, stage intended changes with **+**, type a short commit message (e.g. `Improve occupancy schedule`), and select **Commit**. A commit records changes in your *local Git history*.
+5. **Push:** Click **Publish Branch** the first time, or **Push / Sync Changes** afterward. This uploads commits to **your branch** on GitHub, not to `main`.
+6. **Create a Pull Request (PR):** On the GitHub website, open the repository and select **Compare & pull request** (or **Pull requests → New pull request**). Set the **base** to `main` and the **compare** branch to your feature branch. Describe the changes and testing; ask a teammate to review them.
+7. **Merge after review:** Merge the PR into `main` when the team agrees. Teammates can then pull the updated `main` into their local repositories.
+
+**Where do generated files go?** Python writes them to the paths specified by the commands **in the environment where you run Python** (your local computer, or a GitHub Codespace if using one). Switching branches in the same local clone can leave ignored CSV files untouched; running the simulator again with the same output path can overwrite them. The GitHub website's ordinary code viewer cannot run Python by itself.
+
+**Small browser-only edits:** On GitHub.com you may edit a file using its pencil icon, preferably on a feature branch. For actually running Python, use VS Code on your computer or a cloud environment such as Codespaces.
+
+**Quick reference:** **clone** = make a connected local copy; **pull** = download teammates' commits; **commit** = record your changes locally; **push** = upload commits to GitHub; **PR** = request review before merging to `main`.
+
 ## File ownership / team suggestions
 
 - **Simulator owner:** `simulator/`, simulator equations and validation.
 - **ML owner:** `ml/`, forecasting, model evaluation and data leakage checks.
-- **Energy/optimization owner:** proposed future `optimization/` component, comfort limits, scenario tests.
-- **Integration owner:** proposed future `dashboard/` component, LLM integration and reports.
+- **Energy/optimization owner:** `optimization/` (folder created; implementation to be developed), comfort limits, scenario tests.
+- **Integration owner:** `dashboard/` (folder created; implementation to be developed), LLM integration and reports.
 
 Coordinate architectural changes together. Assign one issue per task; use feature branches and pull requests instead of everyone editing `main` simultaneously.
 
