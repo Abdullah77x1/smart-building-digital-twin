@@ -38,9 +38,9 @@ smart-building-digital-twin/
 
 ## Get the project into VS Code (Windows)
 
-GitHub stores the shared online repository; **VS Code runs the files on your computer**. You do **not** need to download and re-upload the ZIP every time you make a change. Clone the repository once, then pull and push changes using VS Code.
+Use the **GitHub website (github.com)** to view the shared repository, manage branches and pull requests, and collaborate with teammates. Use **VS Code on your computer** to edit and run Python. You do **not** need to install GitHub Desktop or repeatedly download/upload ZIP files. Clone the repository once, then pull and push changes using VS Code.
 
-1. Install [VS Code](https://code.visualstudio.com/) and [Git for Windows](https://git-scm.com/downloads/win) if you do not already have them. Install the Microsoft **Python** extension in VS Code.
+1. Open the [GitHub website](https://github.com/Abdullah77x1/smart-building-digital-twin) in your browser to access the shared repository. Install [VS Code](https://code.visualstudio.com/) and its Microsoft **Python** extension on your computer. To clone, pull, and push using VS Code on Windows, **Git** must also be installed; if `git --version` is not recognized in the VS Code terminal, install [Git for Windows](https://git-scm.com/downloads/win). **Git for Windows is the underlying Git tool, not a GitHub Desktop application**.
 2. In VS Code, press **Ctrl+Shift+P**, run **Git: Clone**, and enter:
    `https://github.com/Abdullah77x1/smart-building-digital-twin.git`
 3. Choose a folder on your computer, sign in to GitHub when prompted (required for this private repository), and open the cloned `smart-building-digital-twin` folder.
