@@ -8,4 +8,3 @@ Objectives:
 - Display machine learning predictions.
 - Show energy consumption and occupancy.
 - Compare optimization scenarios.
-- Integrate the LLM interface.
