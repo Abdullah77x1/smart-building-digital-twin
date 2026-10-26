@@ -1,0 +1,124 @@
+{
+  "training_years": [
+    2022,
+    2023
+  ],
+  "validation_year": 2024,
+  "held_out_test_year": 2025,
+  "train_rows": 210204,
+  "validation_rows": 105390,
+  "selected_epoch": 14,
+  "history": [
+    {
+      "epoch": 1,
+      "train_scaled_mse": 0.2378739860097455,
+      "validation_scaled_mse": 0.04457193240523338
+    },
+    {
+      "epoch": 2,
+      "train_scaled_mse": 0.03638270583785453,
+      "validation_scaled_mse": 0.030573921278119087
+    },
+    {
+      "epoch": 3,
+      "train_scaled_mse": 0.028207020990965784,
+      "validation_scaled_mse": 0.025989074259996414
+    },
+    {
+      "epoch": 4,
+      "train_scaled_mse": 0.02455056732719057,
+      "validation_scaled_mse": 0.023085379973053932
+    },
+    {
+      "epoch": 5,
+      "train_scaled_mse": 0.02222286788587746,
+      "validation_scaled_mse": 0.02113514393568039
+    },
+    {
+      "epoch": 6,
+      "train_scaled_mse": 0.02045456249668733,
+      "validation_scaled_mse": 0.01950776018202305
+    },
+    {
+      "epoch": 7,
+      "train_scaled_mse": 0.019011989817770733,
+      "validation_scaled_mse": 0.01824527606368065
+    },
+    {
+      "epoch": 8,
+      "train_scaled_mse": 0.017815888008857993,
+      "validation_scaled_mse": 0.017260771244764328
+    },
+    {
+      "epoch": 9,
+      "train_scaled_mse": 0.01682377955432791,
+      "validation_scaled_mse": 0.01639213040471077
+    },
+    {
+      "epoch": 10,
+      "train_scaled_mse": 0.016016989056353372,
+      "validation_scaled_mse": 0.01566104218363762
+    },
+    {
+      "epoch": 11,
+      "train_scaled_mse": 0.015281227505405295,
+      "validation_scaled_mse": 0.015008718706667423
+    },
+    {
+      "epoch": 12,
+      "train_scaled_mse": 0.014503757999393463,
+      "validation_scaled_mse": 0.014188380911946297
+    },
+    {
+      "epoch": 13,
+      "train_scaled_mse": 0.013838160395891915,
+      "validation_scaled_mse": 0.013545498251914978
+    },
+    {
+      "epoch": 14,
+      "train_scaled_mse": 0.013203198682243253,
+      "validation_scaled_mse": 0.013086293824017048
+    }
+  ],
+  "validation_mae_model": {
+    "hvac_power_kw": {
+      "+5m": 0.0244,
+      "+10m": 0.0356,
+      "+15m": 0.0453,
+      "+30m": 0.064
+    },
+    "indoor_temp_c": {
+      "+5m": 0.0158,
+      "+10m": 0.0161,
+      "+15m": 0.0163,
+      "+30m": 0.0236
+    },
+    "occupancy_count": {
+      "+5m": 0.167,
+      "+10m": 0.2137,
+      "+15m": 0.2552,
+      "+30m": 0.3608
+    }
+  },
+  "validation_mae_persistence_baseline": {
+    "hvac_power_kw": {
+      "+5m": 0.025,
+      "+10m": 0.0459,
+      "+15m": 0.0645,
+      "+30m": 0.1122
+    },
+    "indoor_temp_c": {
+      "+5m": 0.0121,
+      "+10m": 0.0243,
+      "+15m": 0.0364,
+      "+30m": 0.0728
+    },
+    "occupancy_count": {
+      "+5m": 0.0978,
+      "+10m": 0.1857,
+      "+15m": 0.2694,
+      "+30m": 0.5087
+    }
+  },
+  "notes": "Synthetic, single-zone building; forecasts assume continuation of the simulator's ordinary control policy. Not a validated counterfactual-control model."
+}
