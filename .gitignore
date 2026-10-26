@@ -1,0 +1,32 @@
+# Python local environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Large / reproducible datasets and local simulations
+data/*.csv
+!data/sample_building_data.csv
+data/*.json
+data/*.parquet
+data/*.pkl
+*.summary.json
+pilot_*.csv
+
+# Recomputed local validation and temporary outputs
+reports/*.json
+outputs/
+
+# Notebooks & editor outputs
+.vscode/
