@@ -2,7 +2,7 @@
 
 ## Your contribution in one sentence
 
-“My assigned component is the dashboard. It connects our existing simulator and ML model, displays energy and indoor conditions, runs forecasts, and compares simulated policies with their comfort trade-offs. I used Codex to assist with the implementation.”
+“My assigned component is the dashboard. It connects our existing simulator and ML model, displays energy and indoor conditions, runs forecasts, and compares simulated policies with their comfort trade-offs. I used implementation assistance.”
 
 The team has changed direction since the older CU-BEMS slides. The current GitHub implementation uses a fictional **120 m², single-zone office**, synthetic 2022–2025 data, five-minute intervals and up to 15 occupants. Say this explicitly. Do not describe the current dashboard as showing live sensors or actual CU-BEMS measurements.
 

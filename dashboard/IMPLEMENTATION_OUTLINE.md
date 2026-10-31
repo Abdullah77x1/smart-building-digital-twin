@@ -2,7 +2,7 @@
 
 Prepared for component review, 31 October 2026. Component owner: Hamad.
 
-This is a map of the implemented work and its evidence, not a timesheet or a claim that every line was manually written by the component owner. The dashboard was developed with Codex assistance. The simulator, trained ML model and their reports were already supplied by the team. Personal understanding and presentation rehearsal should be demonstrated separately.
+This is a map of the implemented work and its evidence, not a timesheet or a claim that every line was manually written by the component owner. The dashboard was developed with implementation assistance. The simulator, trained ML model and their reports were already supplied by the team. Personal understanding and presentation rehearsal should be demonstrated separately.
 
 ## 1. Start with the component requirements
 
