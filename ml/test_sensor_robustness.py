@@ -2,6 +2,7 @@
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from datetime import date
 from pathlib import Path
 
@@ -15,7 +16,8 @@ from building_simulator import simulate
 from sensor_simulation import enrich
 from evaluate_sensor_robustness import prepare_paired, evaluate
 from model import MultiTaskModel, save_checkpoint
-from prepare_data import split_years
+from prepare_data import OBSERVED
+import pandas as pd
 
 
 class SensorRobustnessSmokeTest(unittest.TestCase):
@@ -45,7 +47,12 @@ class SensorRobustnessSmokeTest(unittest.TestCase):
             stats = enrich(combined, faulty, seed=42, dropout_probability=0.03,
                            stuck_start_probability=0.02, stuck_steps=6)
             self.assertEqual(sum(stats.values()), 3 * 3 * 288)
-            paired, noisy, features, targets = prepare_paired(faulty)
+            # Short fixture has intentional gaps between years, so bypass only
+            # the full-history continuous-grid check in this smoke test.
+            def load_short(path):
+                return pd.read_csv(path, usecols=["timestamp", "zone_id", *OBSERVED], parse_dates=["timestamp"])
+            with patch("evaluate_sensor_robustness.load_history", side_effect=load_short):
+                paired, noisy, features, targets = prepare_paired(faulty)
             self.assertEqual(len(paired), len(noisy))
             self.assertFalse(noisy.isna().any().any())
             self.assertTrue((noisy["indoor_temp_c"] != paired["indoor_temp_c"]).any())
@@ -62,7 +69,8 @@ class SensorRobustnessSmokeTest(unittest.TestCase):
                             np.ones(len(targets), dtype=np.float32), 64)
             # evaluate() uses the original split_years helper, which requires
             # 2024 validation samples; include a short 2024 fixture instead.
-            report = evaluate(faulty, checkpoint, work / "report")
+            with patch("evaluate_sensor_robustness.load_history", side_effect=load_short):
+                report = evaluate(faulty, checkpoint, work / "report")
             self.assertEqual(report["test_year"], 2025)
             self.assertGreater(report["test_rows"], 0)
             self.assertTrue((work / "report/sensor_robustness_metrics.csv").exists())
