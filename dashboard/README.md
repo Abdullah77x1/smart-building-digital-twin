@@ -96,7 +96,7 @@ A browser pass also covered navigation, real forecast inference, scenario execut
 
 ## Team review and contribution workflow
 
-Read [IMPLEMENTATION_OUTLINE.md](IMPLEMENTATION_OUTLINE.md) for the development steps, file map and evidence. The dashboard was developed with implementation assistance and integrates the team's existing simulator and ML work.
+Read [IMPLEMENTATION_OUTLINE.md](IMPLEMENTATION_OUTLINE.md) for the development steps, file map and evidence. The dashboard integrates the team's existing simulator and ML components.
 
 Work on a separate branch based on the team's current `main`, commit only intended dashboard changes, run the tests, and open a pull request. Teammates review and approve before merging. Do not commit `.venv`, generated history, private chat exports or project attachments.
 
