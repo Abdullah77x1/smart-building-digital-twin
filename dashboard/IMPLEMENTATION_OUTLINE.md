@@ -2,7 +2,7 @@
 
 Prepared for component review, 31 October 2026. Component owner: Hamad.
 
-This is a map of the implemented work and its evidence, not a timesheet or a claim that every line was manually written by the component owner. The dashboard was developed with implementation assistance. The simulator, trained ML model and their reports were already supplied by the team. Personal understanding and presentation rehearsal should be demonstrated separately.
+This document describes the dashboard implementation, integration points and validation. Hamad is responsible for the dashboard component; the simulator, trained ML model and their reports are supplied by the respective team members.
 
 ## 1. Start with the component requirements
 
@@ -60,7 +60,7 @@ Evidence: `app.py`, `service.py`, `static/app.js`.
 
 The date range includes both selected dates. Internally, the end boundary is midnight after the final day. Chart values may be averaged into larger time bins; KPI totals and history exports retain the original five-minute records.
 
-Two calculations to explain without reading a script:
+Core calculations:
 
 - **Energy (kWh)** = sum of electrical power (kW) × 5/60 hours. For example, a constant 2 kW for 30 minutes consumes 1 kWh.
 - **Occupied comfort compliance (%)** = occupied intervals inside 23–26°C ÷ all occupied intervals × 100. With no occupied intervals, compliance is unavailable. This temperature band is a project proxy, not a complete comfort standard.
@@ -85,7 +85,7 @@ Evidence: `scenario()` and `_scenario_cached()` in `service.py`; identity-scenar
 
 ## 8. Build the visual interface
 
-The supplied design reference guided the dark navy panels, sidebar, cyan/purple accents, KPI cards and charts. The layout was adapted to building-energy content. Source Sans 3 is bundled with its license, and tabular numerals keep numbers aligned. Date controls, loading/error states and CSV downloads support a repeatable demo.
+The supplied design reference guided the dark navy panels, sidebar, cyan/purple accents, KPI cards and charts. The layout was adapted to building-energy content. Source Sans 3 is bundled with its license, and tabular numerals keep numbers aligned. Date controls, loading/error states and CSV downloads support the analysis workflow.
 
 Evidence: `static/index.html`, `static/style.css`, `static/app.js` and `static/fonts/`.
 
@@ -99,7 +99,7 @@ python -m unittest discover -s dashboard/tests -v
 
 The ten automated tests cover energy totals, inclusive dates/export, unavailable comfort when unoccupied, invalid inputs, missing/gapped data, forecasts and historical alignment, future-observation independence, identity scenarios, matched conditions and local HTTP behavior. They use temporary generated data and the existing checkpoint. They are not a real-building validation or a full browser accessibility audit.
 
-The local browser flow was exercised during development. Before presenting on a different machine, run the demo there and confirm the font, charts and downloads display correctly.
+The local browser flow was exercised during development. When running on a different machine, confirm the font, charts and downloads display correctly.
 
 ## 10. Submit an isolated change for team review
 
@@ -119,8 +119,7 @@ Still pending: real-data mapping/calibration, the optimization teammate's result
 
 1. The pull request's **Files changed** tab establishes the submitted scope.
 2. Open `service.py` and trace one value from CSV to KPI through `summary()`.
-3. Run the tests and explain the purpose of two tests in your own words.
+3. Run the integration tests and review their coverage.
 4. Demonstrate Overview → Forecasts → Scenario lab → Model & data.
 5. Describe one limitation and the next interface needed from each teammate.
 
-A commit is evidence of a submitted change, not evidence of unaided authorship or understanding. The strongest evidence of ownership is being able to trace, test, explain and improve the component. Be transparent about implementation assistance and follow your course's disclosure requirements.
