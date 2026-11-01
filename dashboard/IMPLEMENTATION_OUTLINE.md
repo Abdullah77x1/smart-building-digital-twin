@@ -99,7 +99,7 @@ python -m unittest discover -s dashboard/tests -v
 
 The ten automated tests cover energy totals, inclusive dates/export, unavailable comfort when unoccupied, invalid inputs, missing/gapped data, forecasts and historical alignment, future-observation independence, identity scenarios, matched conditions and local HTTP behavior. They use temporary generated data and the existing checkpoint. They are not a real-building validation or a full browser accessibility audit.
 
-The local browser flow was exercised during development. Before presenting on a different machine, run the demo there and confirm the font, charts and downloads display correctly. See `DEMO_GUIDE.md` for the reproducible walkthrough.
+The local browser flow was exercised during development. Before presenting on a different machine, run the demo there and confirm the font, charts and downloads display correctly.
 
 ## 10. Submit an isolated change for team review
 
