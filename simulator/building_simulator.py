@@ -182,7 +182,9 @@ def simulate(start: date, end: date, output: Path, seed: int = 42,
              cfg: Config = Config(), setpoint_shift_c: float = 0.0,
              lighting_policy: str = "scheduled", disable_hvac: bool = False,
              allow_heating: bool = True, outdoor_offset_c: float = 0.0,
-             scenario_id: str = "historical") -> dict:
+             scenario_id: str = "historical",
+              fixed_cooling_fraction: float | None = None,
+             optimize_cooling: bool = False) -> dict:
     """Write [start,end) CSV and return unrounded diagnostic summary."""
     cfg.validate()
     if end <= start:
@@ -269,6 +271,42 @@ def simulate(start: date, end: date, output: Path, seed: int = 42,
                     min(1.0, prior_hvac_signed + cfg.ramp_limit_fraction))
                 if not allow_heating:
                     signed_level = max(0.0, signed_level)
+            if fixed_cooling_fraction is not None and ts >= start_ts:
+                if not 0 <= fixed_cooling_fraction <= 1:
+                    raise ValueError("Cooling fraction must be between 0 and 1")
+                signed_level = fixed_cooling_fraction
+
+            if optimize_cooling and ts >= start_ts and people > 0 and not disable_hvac:
+                options = []
+
+                for fraction in [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]:
+                    if abs(fraction - prior_hvac_signed) > cfg.ramp_limit_fraction:
+                        continue
+
+                    cooling_kw = cfg.max_cooling_kw_thermal * fraction
+
+                    predicted_temp = indoor + dt_h * (
+                        cfg.thermal_conductance_kw_per_k * (tout - indoor)
+                        + gains - cooling_kw
+                    ) / cfg.thermal_capacitance_kwh_per_k
+
+                    violation = max(
+                        cfg.occupied_comfort_min_c - predicted_temp,
+                        predicted_temp - (cfg.occupied_comfort_max_c - 0.2),
+                        0.0
+                    )
+
+                    power_kw = (
+                        cooling_kw / cooling_cop(tout)
+                        + cfg.fan_full_load_kw * fraction
+                        + cfg.hvac_standby_kw
+                    )
+
+                    options.append((violation, power_kw, fraction))
+
+                if options:
+                    signed_level = min(options)[2]
+
             level = abs(signed_level)
             cooling = cfg.max_cooling_kw_thermal * max(0.0, signed_level)
             heating = cfg.max_heating_kw_thermal * max(0.0, -signed_level)
