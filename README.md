@@ -1,5 +1,7 @@
 # Smart Building Digital Twin — Senior Design Project
 
+This repository preserves the earlier Simulator V2, neural forecasting, sensor experiments, HVAC policy research and prototype dashboard. The final BOPTEST-based supervised dashboard, semester record and report are in the [central COSC14 project repository](https://github.com/Abdullah77x1/SDP-BOPTEST).
+
 **Team project · Simulator V2 + Multi-Task Forecasting V1**
 
 A reproducible, **synthetic, single-zone** office-building simulator and a PyTorch multi-task forecasting model. The simulator generates five-minute building records for 2022–2025. The model forecasts **HVAC electrical power, indoor temperature, and occupancy** at **+5, +10, +15, and +30 minutes** (12 predictions).
